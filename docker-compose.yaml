@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  # Django application service
+  web:
+    build: .
+    command: gunicorn social_networking.wsgi:application -b 0.0.0.0:8001
+    volumes:
+      - .:/app
+    ports:
+      - "8001:8001"
+    # depends_on:
+    #   - db
+    environment:
+      DJANGO_SETTINGS_MODULE: "social_networking.settings"
+      DEBUG: "True"  # Set to "False" in production
+      DATABASE_URL: "postgres://postgres:postgres@db:5432/social networking"
+
+  PostgreSQL database service
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: social networking
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
