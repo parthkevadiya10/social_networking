@@ -5,3 +5,4 @@ psycopg2
 djangorestframework-simplejwt
 django-ratelimit
 gunicorn
+ratelimit

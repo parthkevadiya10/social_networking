@@ -7,6 +7,9 @@ from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate, login
 from rest_framework_simplejwt.tokens import RefreshToken
 from django_ratelimit.decorators import ratelimit
+from ratelimit.decorators import RateLimitDecorator
+
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 from django.db.models import Q
 from rest_framework import generics
@@ -45,12 +48,12 @@ class LoginView(APIView):
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class RestrictedView(APIView):
-    permission_classes = [IsAuthenticated]
+# class RestrictedView(APIView):
+#     permission_classes = [IsAuthenticated]
 
-    def get(self, request):
-        user = request.user
-        return Response(UserSerializer(user).data)
+#     def get(self, request):
+#         user = request.user
+#         return Response(UserSerializer(user).data)
 
 
 
@@ -76,10 +79,12 @@ class UserSearchView(generics.ListAPIView):
 
 class FriendRequestCreateView(generics.CreateAPIView):
     serializer_class = FriendRequestSerializer
+    authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
 
-    print("@")
-    @ratelimit(key='user', rate='3/m', block=True)
+    # print("@")
+    # @ratelimit(key='user' ,rate='3/m', block=True)
+    @RateLimitDecorator(calls=3,period=60)
     def perform_create(self, serializer):
         print("a")
         sender = self.request.user

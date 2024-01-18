@@ -20,3 +20,30 @@ You can install all the required dependencies by running
 ```
 pip install -r requirements.txt
 ```
+
+#DATABASE
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'your_database_name',
+        'USER': 'your_database_user',
+        'PASSWORD': 'your_database_password',
+        'HOST': 'your_host',
+        'PORT': '5432',
+    }
+}
+
+#api endpoint  |  CURD METHOD
+
+http://localhost/api/signup/ | post
+http://localhost/api/login/  | post
+http://localhost/api/friend/list/ | get
+http://localhost/api/user/search/ | get
+http://localhost/api/friend/requests/ | get
+http://localhost/api/friend/request/  | post
+http://localhost/api/friend/accept/<int:pk>/ |put
+http://localhost/api/friend/reject/<int:pk>/ |option
+
+also postman file is share there you can get all data
+
+for other than two apis which is signup and login  we need token for authorizations which we get from login api as output . we have to give that token to every api in postman as bearer token .
